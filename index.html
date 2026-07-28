@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VITAL Portfolio</title>
+<style>
+  :root {
+    --ink: #14202b;
+    --muted: #5b6b78;
+    --line: #e4e9ed;
+    --bg: #f7f9fa;
+    --card-bg: #ffffff;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+  }
+  header {
+    padding: 48px 32px 28px;
+    text-align: center;
+    border-bottom: 1px solid var(--line);
+    background: var(--card-bg);
+  }
+  header h1 {
+    margin: 0;
+    font-size: 2rem;
+    letter-spacing: -0.02em;
+  }
+  .filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+    padding: 20px 32px 0;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .filter-btn {
+    border: 1px solid var(--line);
+    background: var(--card-bg);
+    color: var(--muted);
+    padding: 7px 16px;
+    border-radius: 999px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  .filter-btn:hover { border-color: #b7c2ca; }
+  .filter-btn.active {
+    background: var(--ink);
+    border-color: var(--ink);
+    color: #fff;
+  }
+  .grid {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 32px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+  }
+  .card {
+    background: var(--card-bg);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 28px 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    cursor: pointer;
+    transition: box-shadow 0.15s ease, transform 0.15s ease;
+  }
+  .card:hover {
+    box-shadow: 0 6px 20px rgba(20, 32, 43, 0.08);
+    transform: translateY(-2px);
+  }
+  .logo-wrap {
+    height: 84px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 16px;
+    width: 100%;
+  }
+  .logo-wrap img {
+    max-height: 84px;
+    max-width: 240px;
+    object-fit: contain;
+  }
+  .logo-label {
+    color: var(--ink);
+    font-weight: 700;
+    font-size: 1.1rem;
+    letter-spacing: -0.01em;
+  }
+  .badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    justify-content: center;
+    margin-bottom: 14px;
+  }
+  .badge {
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    color: var(--badge-color);
+    background: color-mix(in srgb, var(--badge-color) 12%, white);
+    border: 1px solid color-mix(in srgb, var(--badge-color) 30%, white);
+    padding: 4px 10px;
+    border-radius: 999px;
+  }
+  .desc {
+    margin: 0;
+    color: var(--muted);
+    font-size: 0.92rem;
+    line-height: 1.5;
+  }
+  .card.hidden { display: none; }
+  footer {
+    text-align: center;
+    padding: 24px;
+    color: var(--muted);
+    font-size: 0.8rem;
+  }
+
+  /* Detail page */
+  .detail-page {
+    display: none;
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 48px 32px 64px;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  .detail-page.active { display: flex; }
+  .back-btn {
+    align-self: flex-start;
+    border: none;
+    background: none;
+    color: var(--muted);
+    font-size: 0.9rem;
+    cursor: pointer;
+    margin-bottom: 24px;
+    padding: 0;
+  }
+  .back-btn:hover { color: var(--ink); }
+  .detail-page .logo-wrap { height: 108px; margin-bottom: 20px; }
+  .detail-page .logo-wrap img { max-height: 108px; max-width: 320px; }
+  .detail-page .logo-label { font-size: 1.4rem; }
+  .detail-name {
+    margin: 0 0 12px;
+    font-size: 1.5rem;
+    letter-spacing: -0.01em;
+  }
+  .detail-desc {
+    color: var(--muted);
+    font-size: 1rem;
+    line-height: 1.6;
+    margin: 0 0 20px;
+  }
+  .website-link {
+    color: var(--ink);
+    font-weight: 600;
+    text-decoration: none;
+    border-bottom: 2px solid var(--ink);
+    padding-bottom: 2px;
+  }
+  .website-link:hover { opacity: 0.7; }
+  #list-view.hidden { display: none; }
+</style>
+</head>
+<body>
+<div id="list-view">
+  <header>
+    <h1>VITAL Portfolio</h1>
+  </header>
+  <div class="filters">
+    <button class="filter-btn active" data-filter="all">All</button><button class="filter-btn" data-filter="Accelerator">Accelerator</button><button class="filter-btn" data-filter="Non-Dilutive Funding">Non-Dilutive Funding</button><button class="filter-btn" data-filter="PrEP Award">PrEP Award</button>
+  </div>
+  <div class="grid">
+      <article class="card" data-id="rec43Hoby2butPZuZ" data-programs="Accelerator" onclick="showDetail('rec43Hoby2butPZuZ')">
+        <div class="logo-wrap"><img src="https://v5.airtableusercontent.com/v3/u/55/55/1785268800000/iGr_-uiA0q94OIApq9U6Aw/dEM3gu8MsOgUc-FMHQ3bhZyLJEIHnpC4JTVzaaNdWcKT4E2RQo1WM-qYh4LN5STsGPwE5NRHKEibB0V13UC6MNP7_1k_PL8dF4-Yzb80pYXYZtsy2UFzvbb5FGiuRd7DIV66sVOgqonBMcCbNIDocshkjUKuEw24ctxgKfm7QtLkMjARlJJXmbWF1JnnzoTU/AZsMUpUxEi73-ZxRVDAB5l8BfYXx3ZEXbOFMf2UaNWc" alt="" loading="lazy"></div>
+        <p class="desc">Thylacine Biotherapeutics is an early-stage biotechnology company developing a novel, proprietary, and adaptable lipopeptide antiviral platform that targets endemic viruses and those that may cause future outbreaks. These inhalable therapeutics treat illness, prevent infection, and limit transmission.</p>
+      </article>
+      <article class="card" data-id="rec5aVvLqWdzHJDAE" data-programs="Accelerator" onclick="showDetail('rec5aVvLqWdzHJDAE')">
+        <div class="logo-wrap"><img src="https://v5.airtableusercontent.com/v3/u/55/55/1785268800000/YqIkxt3VQXl8J6FL0oLVeg/4LgLMLzQGNGzliAQrW_4RWc4i70YYHBfsK29QpTw2eX8pBFoMwRLNDuIpGrBLsb8tej9pFA19-cTP7V21h43D1VaJSm5EeRtxitGY50VfeSFY5PuZvQYvKLpM08XfihWVGSo-sRJJnKgHR2aFNdjX1RWSUAA9lbYNYGt1mPd1Co/aMQR_NcO0F5dU2XY0FUFmiFUnZp3ZQ80ZD6javIGOXo" alt="" loading="lazy"></div>
+        <p class="desc">Macrotope, Inc. is a biotech startup that embraces an innovative antigen-centric approach to vaccine development and therapeutic antibody discovery. Their patented MAV technology leverages antigen conformational dynamics to amplify immune responses and enhance epitope coverage, maximizing the likelihood of identifying antibodies with desired properties.</p>
+      </article>
+      <article class="card" data-id="recFWKYjU7wfySFsQ" data-programs="PrEP Award" onclick="showDetail('recFWKYjU7wfySFsQ')">
+        <div class="logo-wrap"><img src="https://v5.airtableusercontent.com/v3/u/55/55/1785268800000/13HG71k0hY9KZgq3xxohaw/D9oslrjHaXTkYQyEFIQSRMXl844v1ev8L7k2eS6RmvYr8S1npxammNPQAOUHgZFeXz1qK03yTydLPoZUMfPNMIpBGQrH5qxD6Qj6-Ri3rsGTT26xckNlSFYuGLDfrmwcCGpULN8mcktG9-X0T_g5l0MvCy0yrcrKFBlLU-R5o04/ShcCRs5hyp0RwBuOtgXuc8zffrqATprViF08a3prLdM" alt="" loading="lazy"></div>
+        <p class="desc">Tenza converts probiotic microbes into living factories for targeted delivery of supplements, therapeutics, and vaccines</p>
+      </article>
+      <article class="card" data-id="recFZPGdS5Wh0MIQB" data-programs="Non-Dilutive Funding" onclick="showDetail('recFZPGdS5Wh0MIQB')">
+        <div class="logo-wrap"><img src="https://v5.airtableusercontent.com/v3/u/55/55/1785268800000/6mn6XioV5WeuBF5X_zHvlg/tvc2-sC_l-xbIv_SCu0QGFMUTdHSrTuSYn7mPz-9fNC3zDDtzUTL0_SzEnGkLDvZIbl_xhkVVRFMDD5RSQ4emWikj2hcsq0Lhr00tC_5z_DVYlsnqtzbFLF65cTIGM3V4--DkX5JBLwSgKSMtzcB68FgcDcLrtrju5sJfF4jlIM/Rc02b489a20l1OjvPS_Mh1GeD6uh9HsDIlF2LUjw7lo" alt="" loading="lazy"></div>
+        <p class="desc">New Platelet Company develops manufactured universal platelets designed to expand access to lifesaving blood components. Its approach could strengthen hospital surge capacity, reduce shortages, and support emergency, disaster, and routine healthcare needs.</p>
+      </article>
+      <article class="card" data-id="recH7qfY3EL76Vfze" data-programs="Accelerator" onclick="showDetail('recH7qfY3EL76Vfze')">
+        <div class="logo-wrap"><img src="https://v5.airtableusercontent.com/v3/u/55/55/1785268800000/2QzK451KCqJy3UfAYaDBEw/Bvd6uIzCY3hSQFTluhzblFgHtz9jCU_5sxHPPxzVr0qqWf1ofrfyg3Ml4Y2-I7Bqc7pfosM6ZaowMaWqgSVcYN0cLyU8LO7aBFTXkiwQAqOQHCtGIMp0QnkIf25SgWWLwmZUUagP5oZkk5eIxg901dQIOXHUuGoFLvfgwp-EEolAu-a7yhe5WcJsEy2l3tOs/5Ka2zFWceoUoMW7wlofwS1SfdTzWNUcSegA8nh-88wI" alt="" loading="lazy"></div>
+        <p class="desc">Cutanos harnesses the power of immune cell-specific drug delivery to develop next-generation therapies for infectious diseases and cancer.</p>
+      </article>
+      <article class="card" data-id="recKxGlbnk9tGpdl1" data-programs="PrEP Award" onclick="showDetail('recKxGlbnk9tGpdl1')">
+        <div class="logo-wrap"><img src="https://v5.airtableusercontent.com/v3/u/55/55/1785268800000/ridgLDZZaSUZsxn3S_HM5g/fhjNOeAfOVeGFj7r89n3JVfmyhZ_v5pc5TlvaAmVkfPD6X2c3QTCfEAG15a8Rinj10XjgwRudhZ7OrH44eSj6nfxtIXU8vT2ciK42hhyr6bYhCYdhr7QXp4JN6ATBCtd_CZxD8_R5q4iG-JPDZJ0jLC6olZfwUL4tlwLBKWChGs/UL3o4OzEvMxf0VnY7NfLdV8u9tc6k0CMUkm99KWKrng" alt="" loading="lazy"></div>
+        <p class="desc">Boost Biopharma develops protein-based vaccines and monoclonal antibodies through its Rapid Antigen Deployment (RAD) platform, engineering pathogen-specific antigens at speeds comparable to mRNA technology. The platform is designed to address issues of immune imprinting that can inhibit vaccine development, producing candidates that are safe, scalable, low-cost, and stable. Its lead SARS-CoV-2 candidate, backed by CEPI, NIH/NIAID, and BARDA, is now in Phase 1 trials.</p>
+      </article>
+      <article class="card" data-id="recMyDM6BVNeUqvhL" data-programs="Accelerator" onclick="showDetail('recMyDM6BVNeUqvhL')">
+        <div class="logo-wrap"><img src="https://v5.airtableusercontent.com/v3/u/55/55/1785268800000/lN1X3GJh9Du3oBxoQEuRbQ/c-VLesJruDdOkiL1MHvSb_aXzKhqVE_j54qiedY3xJIh524vXB96VK4MEwtLPV389A2CUZ8dZ9PDWtyXPJFC9HYYsdAepVhU2cfEIGwI6RjDNU7DtDJQ80w2noZY_19oeULQVUNykyN49-jpX3BWqS78w5-Cw-X5aS99FJmutR4/q9GpHlG_XFOsLUtjSKAQMxj5Rx2b5AKEfvYazImDu3Q" alt="" loading="lazy"></div>
+        <p class="desc">Avocet Bio is on a mission to develop transformative solutions for global health challenges, with a current focus on protecting high-risk populations from respiratory viral infections. Backed by a dynamic team of innovators, AvocetBio combines cutting-edge technology with a deep commitment to improving patient outcomes and advancing public health.</p>
+      </article>
+      <article class="card" data-id="recQTZ0hOENArIFs5" data-programs="Accelerator" onclick="showDetail('recQTZ0hOENArIFs5')">
+        <div class="logo-wrap logo-label" aria-hidden="true"><span>NewCo</span></div>
+        <p class="desc">Grant Knappe is an innovator at the Bathe BioNanoLab working on harnessing nucleic acid nanotechnology to develop more potent and durable vaccines and active immunotherapies.</p>
+      </article>
+      <article class="card" data-id="recRATMXIWeGVb3ah" data-programs="Accelerator" onclick="showDetail('recRATMXIWeGVb3ah')">
+        <div class="logo-wrap"><img src="https://v5.airtableusercontent.com/v3/u/55/55/1785268800000/ARjZnDR3eEigGFbltItMfQ/kjNUSOssgG4zGe7W4KBIb9Frgo8FKAdiwbInoclzONSN5fhpyrvTEvEdMiOY76VWYmDUNW4VTvB1DFXxNtPvGWxr9c7Kve_YSxcncqy4NRrb61SHXz2Ti-9bjjecqiTYXl_7vaRVnp8MAmaqR-TE346z2ulA2gCIxv9BnzWawe4/WBtEMHl5DLHsJ7IcXkNy2CEX98JAa5gucR8Nj29hRn0" alt="" loading="lazy"></div>
+        <p class="desc">The Yin Lab at University of Texas at Austin is an immunoengineering lab that develops next-generation nanoparticle adjuvants to enable more effective vaccines against influenza, coronaviruses, and filoviruses.</p>
+      </article>
+      <article class="card" data-id="recRth8IVQOJ037sB" data-programs="Non-Dilutive Funding|Accelerator" onclick="showDetail('recRth8IVQOJ037sB')">
+        <div class="logo-wrap"><img src="https://v5.airtableusercontent.com/v3/u/55/55/1785268800000/SAG9VaWPv0Fhy5VOcy3dwA/YIB5HB9E8rSg-h1PmVdB9zGEqHdHVbr-KWmduDuPHt8kS1cujCt9aMpxk2Y3bIKefHHw6FAPXTZzlfg25XayeGutBWZvAEtIC_0VVxNGyeY1KfoYibq9FZhOMfGoEJWUmqRmd2HiOyTQIy_uAFrJn3ifMTEWXZiVVDEvHxWeTWk/1VkxHky2kmvC5UL6jdgxgFU9r3fXfKAe71FB1f4yU94" alt="" loading="lazy"></div>
+        <p class="desc">Epigenter develops a new type of therapeutic protein designed to epigenetically unlock the body’s silenced potential, creating new approaches to treating chronic and intractable diseases with high unmet need.</p>
+      </article>
+      <article class="card" data-id="recRwKHCt0RD790da" data-programs="Non-Dilutive Funding" onclick="showDetail('recRwKHCt0RD790da')">
+        <div class="logo-wrap"><img src="https://v5.airtableusercontent.com/v3/u/55/55/1785268800000/DvexFlfzmpOjTGlDBxSpgg/jW51ErZN9dcgkK74dLhA_l1UVV5DoJda1mkJaXSlHgr95SMmIHVt9GVTSUbmhr_AD2Mve9iAjAZyRrm_GDxMa8r6h6Xork1FmckgceAm6kz9mbZYR3uh1X3d8_ylKY-gfIGksLTtTacKHwCoyZY1V3OnpJ9Mj8bEbm7RSfIgba0/D4srqyRXSA2k23UE1RsxQOvbptnZUqJfxCOkQigNYoM" alt="" loading="lazy"></div>
+        <p class="desc">Fletcher Biosciences develops precision immunotherapies that selectively target disease-associated immune cells. The company&#x27;s approach is designed to enable highly specific treatments with improved safety profiles.</p>
+      </article>
+      <article class="card" data-id="recWBPm0tPMNY1wt9" data-programs="Accelerator" onclick="showDetail('recWBPm0tPMNY1wt9')">
+        <div class="logo-wrap"><img src="https://v5.airtableusercontent.com/v3/u/55/55/1785268800000/1tRkhgwLyelaqVAY6ujzXw/T5otrA3keqT4gMu1DxaHISy9ITDMi51HInUfvPkUyQp9kBFIQZ1Idl8hAox2tOFX3Kny-YL5dp2gD9PkjXRMo5SUtO8VihS9jS3eDSDf1nvRbvSFF-o38Rm8ireIIiHUnDws5T7pIP0cVHet8T5_ZGe9oXcofFr48UI3UIYzV0s/sP9ALaP7vGWMBGQ2DHoaP6vpoqnbeTitMQY9Pi2gies" alt="" loading="lazy"></div>
+        <p class="desc">Cryptyx Bioscience harnesses an innovative and proprietary drug discovery platform to unlock the potential of cryptic metabolites and address today&#x27;s most pressing and unmet health challenges.</p>
+      </article>
+      <article class="card" data-id="recg3R6TuMdBltNbF" data-programs="Accelerator" onclick="showDetail('recg3R6TuMdBltNbF')">
+        <div class="logo-wrap"><img src="https://v5.airtableusercontent.com/v3/u/55/55/1785268800000/iltpGzze9W4MHGdi4BuUzw/Vpy6aSk0NGejJRYRcCSCmydzgEVp2yxW9VCTmm6FwQ_kEM41fmYJqYd5K-4C6F7o6g1cNpKhKK6JJ60H_LoTkUnocahH2DTD4FS8cgcVUyS3fPI1MdmMqS9g9yUyusgjrrFiZJrkrj_OmubmvNyTmtPR3ULvKqCEwyAc7fQ09Q8/MRxqZReG2RTJ-pTo-sezdJSoY3VZWKBy1nxfoCJXHDY" alt="" loading="lazy"></div>
+        <p class="desc">InflammaSense builds the VITALx-patch, a wearable platform that records Autonomic Neurography, or ANG, as a new vital sign. By transmitting disease severity to clinicians with millisecond precision, the technology aims to improve therapeutic efficacy.</p>
+      </article>
+      <article class="card" data-id="rechb6mUTGgT3azvO" data-programs="Non-Dilutive Funding" onclick="showDetail('rechb6mUTGgT3azvO')">
+        <div class="logo-wrap"><img src="https://v5.airtableusercontent.com/v3/u/55/55/1785268800000/_-30ryZtTf8MpKQxa0TE1A/5EmCQBbMLygNHpGIL_K-8eU2YVGazXLw6Pf9pAxO3RQ-Zz9KHt0Wvu4OrOSLjKP62gFkSKTfh-GyRJ6VMLuPmmletAzBMNpj5_FogPt3rvnjl2v6e1qIZhbwRQ8H4wfe7LEPEn2aMWkbOsokhAvbV3Gq_6HmSzexMmefBP7Cz_mysfuVnusAihFVDNPFblLn/bz1OiSYXD6gSO2zLchB3ocR23dQ7kvvwktG3yyjIylY" alt="" loading="lazy"></div>
+        <p class="desc">Safi Biotherapeutics Inc. is developing a cost-efficient manufactured human red blood cell (mRBC) product at scale to address military and civilian blood shortages, including freeze dried and glycerol-free frozen mRBC formulations for pre-hospital use and military and government stockpiling.</p>
+      </article>
+      <article class="card" data-id="reck58YHv7Y8X0P5F" data-programs="Non-Dilutive Funding" onclick="showDetail('reck58YHv7Y8X0P5F')">
+        <div class="logo-wrap"><img src="https://v5.airtableusercontent.com/v3/u/55/55/1785268800000/6p5jtf_PD_EcHUA6UkuRGQ/ls03SbkhGlSH0i6Le-PJF-8DkPP9jPiGH9dk26WtOCBDj1pZ-5C3gHYKI-AUIWA7-7Vyq5hJUUhfXG6BUctZU3N9-vzL9xq3E3TpkXDOJ2Bv4-bRG1EpShy2aHq5hudVPsb5xmbyAKJIpnbgr6UkVOBkU_Xxe4jcTnBDAQDXvj4/SNiOJpeXWO2ppLr7AX23GNXyIropjwyGZU4AfzoYUzM" alt="" loading="lazy"></div>
+        <p class="desc">Vaayu Therapeutics is a preclinical-stage biotech company developing novel small-molecule kinase inhibitors to treat severe influenza and related acute respiratory distress syndrome (ARDS). Founded by researchers from institutions including Tufts University and Fox Chase Cancer Center, the company focuses on blocking cell death to prevent fatal lung damage.</p>
+      </article>
+      <article class="card" data-id="recklLqYRFPeiCoCt" data-programs="Non-Dilutive Funding" onclick="showDetail('recklLqYRFPeiCoCt')">
+        <div class="logo-wrap"><img src="https://v5.airtableusercontent.com/v3/u/55/55/1785268800000/NLfv52XY6d1u9X5mj7tRzQ/WxwMU7Zgn82u9N6WGwMEh-bmok6C72E2YipeqpCi6qvjEZmbj_rkow7EWizG_djswPsN_C3WgWHYGACK9quwttaQ4aCISS2OmBLanxoj3iYH8Zq8ltji2UiQ8WTTd0aT6xCeXY7lLfOREKjEbOBcMkVPGu3H1Tyw_6vgkFMgIRE/Aw5GQ0Tg17Rstvtcn0pGkQY9v6s30WxqdOt8sj6C138" alt="" loading="lazy"></div>
+        <p class="desc">Nitro Biosciences is a company developing a next-generation antigen engineering platform</p>
+      </article>
+      <article class="card" data-id="recmHAhx0OrMN4U3C" data-programs="Accelerator" onclick="showDetail('recmHAhx0OrMN4U3C')">
+        <div class="logo-wrap"><img src="https://v5.airtableusercontent.com/v3/u/55/55/1785268800000/shM3lhgW4KFVXyP9GBt_FA/q05Kw7YzC6ccnnNQzhOLkW3ykkuo4yXkA4zUnxScfdv-cWJJN-2AWOHPCPyRh7b6TsilL_FFhdDKNoM6gGyjPs5Nou27zYglvlFMIz8rVj_pHT2W1fN7Eorgo570DmcKx4FhpcTKKK-pgPOMPn9Y42YBCUpqHzGJOTMoOE6Oaxw/l1K35Y72IwbkdDs7DLzck5memjLQSkbZkpwLUjbHHus" alt="" loading="lazy"></div>
+        <p class="desc">AuraVax Therapeutics is commercializing its intranasal platform termed “NanoSTING” to treat and prevent respiratory infections independent of the pathogen. NanoSTING technology safely and sustainably activates the STING pathway to restore and boost innate immunity. NanoSTING-001 is a broad-acting intranasal host-directed-therapeutic to treat infections from respiratory pathogens, and NanoSTING-002 is a mucosal adjuvant to improve immune responses to vaccines.</p>
+      </article>
+      <article class="card" data-id="recpkkWRQDAH7qyKK" data-programs="Non-Dilutive Funding" onclick="showDetail('recpkkWRQDAH7qyKK')">
+        <div class="logo-wrap"><img src="https://v5.airtableusercontent.com/v3/u/55/55/1785268800000/82N1YoH6LDaVQeyqElP98A/sXle7ls-yjRAJHxvFk6_t7pbwnaFNejmOOv9TOnCGZ73TcELqc1LYllVxZvGIW_XPv4123NL2BMYQ8qErRbewetvZX1jWuWqu34Ng_NsBLz4XyhxMhtKiG6fWt8KoUh9ljq11MRCQKkm0lAtLpkH8ENrNfXd-5_zbmF-UZvdx1M/5eZhS8L2rq5tSwZbPUWajGY9cK2ATHqJ7-ym2VTsB4E" alt="" loading="lazy"></div>
+        <p class="desc">Narval is developing Synthetic Antibody Mimetic Proteins (AMPs), a next-generation alternative to conventional antibodies, delivered through mucosal or skin tissues to treat diseases of the eyes, lungs, and skin. Its platform aims to make antibody therapeutics safer, more accessible, and less costly for rapid-response medical countermeasures.</p>
+      </article>
+      <article class="card" data-id="recsy2JZtjPM7h8ww" data-programs="Accelerator" onclick="showDetail('recsy2JZtjPM7h8ww')">
+        <div class="logo-wrap"><img src="https://v5.airtableusercontent.com/v3/u/55/55/1785268800000/cH08p0brW6i2fzR1oD_rgQ/HehKTT2PR8zL4RhuhkmL27gZkhdNERaxIq6YAUxKhcqnuI-cf92Y_JL5JjF7sduHykhGOk2VMPFDR-suOOSWP_qs1Nd2p-Xgrg2RXrjDPhZOIcf33WfFCyJTllaUIIXhuZazEsSusOHtLkNP6YQJocNS-CtWmAmPGzbMs6poN1CmRYBkCwQJbk-ATERqnEAB/UO7Ym84YFVxrI5XA-InSAYGbVDwe5YCvUeTZrs3fBNU" alt="" loading="lazy"></div>
+        <p class="desc">Pavi Health reimagines precision medicine for severe infections and sepsis, providing critical information to improve clinical outcomes and reduce costs.</p>
+      </article>
+      <article class="card" data-id="recwHdXZ0YQyBZvvA" data-programs="Accelerator" onclick="showDetail('recwHdXZ0YQyBZvvA')">
+        <div class="logo-wrap"><img src="https://v5.airtableusercontent.com/v3/u/55/55/1785268800000/sPY81PsVNG8BOMk4fArCEw/y6m2IgNBnt5h5kPKXXrvQyoA8UC_7ulkLjxU1rfgoQ0UAQz-06L_LRdRoU_POqHNMCjFaP6LufTDLOg9jWImMoDmbWiWcIxE9agBrAhB6QDRblK8NPsCh1WDLthCyTtVn_7BcIEl7HNbI-tMWDQ-Z0_-NwjGhfFCCKky2e4ADT4/C1J3q64oQEHWzE4xrGpBlECwPDRPKFSzwIge94V8GoA" alt="" loading="lazy"></div>
+        <p class="desc">Cell BioEngines develops off-the-shelf allogeneic cell therapies by chemically reprogramming stem cell fate and function to treat serious and currently incurable diseases.</p>
+      </article>
+      <article class="card" data-id="recxd17dFT4f1PR7c" data-programs="Accelerator" onclick="showDetail('recxd17dFT4f1PR7c')">
+        <div class="logo-wrap"><img src="https://v5.airtableusercontent.com/v3/u/55/55/1785268800000/heMNVem4AUMMX9j7DJ0JfA/nyzblDtwnsjqgqS79FgTafh-Vfn7QuX7-3S7minyDA3Z2naS24CueVmuUzxkQZQC8JwKDF5-QFcI88hmUjJoNDB6oOrhFgsrUAx2gDVV85Js6l-N53hLVnSeeiVZeDD-Lwb8rlt8F0W-ck9S1lAmV73wPyqWReT6WJqtzyIzf6E/O9LmeAeAuyyalKWwhAE0sFfSc-i4_LjUIJkUH9xFX2w" alt="" loading="lazy"></div>
+        <p class="desc">Sagitta Biotech develops innovative vaccines featuring high immunogenicity, short development time, and constant manufacturing process in order to tackle unmet needs in the developed and developing worlds.</p>
+      </article>
+      <article class="card" data-id="recyHm3Erqpq152k3" data-programs="PrEP Award" onclick="showDetail('recyHm3Erqpq152k3')">
+        <div class="logo-wrap"><img src="https://v5.airtableusercontent.com/v3/u/55/55/1785268800000/Qh0ZNSVw1sFQzr7P7qzMuA/NaeRIXGuV4Fpmk1oP_2XirwWf1S4ppFlCvNB-hhhxilEU-xQmbA3bXb1Fr5v5odhl7vpW64Zgo7LMfs6QjcCtWEslhii0OqoVQeH9Jss2wuKe21ChutRAJ78QPuAGeePMOpu0cT5sapefqG7EPw9BNZYT63OXvNdxniDWwB9e0Wn61yfCX2-PKnMlx0uvbBN/oXW3H4jsZZLHmZKDHTy5-pIAq_85R2Gf5mg12UETEYo" alt="" loading="lazy"></div>
+        <p class="desc">Cyrus Biotechnology is a computationally-driven protein engineering company that transforms naturally occurring proteins into superior therapeutics using advanced modeling and deep mutagenesis. Its lead programs target severe autoimmune disease and Acute Respiratory Distress Syndrome (ARDS) through engineered biologics.</p>
+      </article>
+      <article class="card" data-id="recyOA3hNlstQAx7q" data-programs="Accelerator" onclick="showDetail('recyOA3hNlstQAx7q')">
+        <div class="logo-wrap"><img src="https://v5.airtableusercontent.com/v3/u/55/55/1785268800000/0FnxAAxY8Z5Dj6j3BTa9MA/c6URzD6roUsj4pkYYtnrv2z6tmMV7FqQ2gYoWgjx3rRffUO9hDPYP35h6UQ3UcTNtGTIq1eAVKJbIac3OkZFtrbXO9dLMkYtOUD1PWYD8mf_052CAm0eAS8W_SAYEsA5HUS8wiyW6yFI7u_TbGkMBUccOxyILbpXibNBnq7jQlM/QkCXzQg0OAXphRyIOUFr6pMNh3zTxXa5of8oF-9ZQHU" alt="" loading="lazy"></div>
+        <p class="desc">Immunyx Pharma is developing novel immune modulating therapies by targeting the toxic activity of the neutrophil in infectious and inflammatory disease. Their first-in-class orally available drug, IMYX-3 has been shown effective in safe in animal models and is positioned to reach clinical evaluation in the coming year.</p>
+      </article>
+      <article class="card" data-id="recyakftjc6tvfIcO" data-programs="Non-Dilutive Funding" onclick="showDetail('recyakftjc6tvfIcO')">
+        <div class="logo-wrap"><img src="https://v5.airtableusercontent.com/v3/u/55/55/1785268800000/q9MeIlIPYjGF37zvj1h5Vw/ksiL017J6qOgViOWDSLI1ltOxdteaK6IyzPuEYhmxy8nKPY7bafHLdvDgyOLhujdLXzvh4mwyDkN39x8CysFPeT9TvKKxCe7EyYB2zixIe7KYXVJiADtVilLkrtlGFuZDiTNPQ8sjpJfEcXZy0tHPAO6PHnr1C4HfB0f31rRriQ/6AuBgWbKymJSmpjAUMyM6euavBRc3TtAWaFz_knJF-I" alt="" loading="lazy"></div>
+        <p class="desc">Spectre Bio develops genome-inactivated bacterial-like particles, or BLiPs, that train mucosal innate immunity against incoming pathogens, which can be deployable anytime and anywhere.</p>
+      </article>
+      <article class="card" data-id="recylcwAN5pID1MXW" data-programs="Accelerator" onclick="showDetail('recylcwAN5pID1MXW')">
+        <div class="logo-wrap"><img src="https://v5.airtableusercontent.com/v3/u/55/55/1785268800000/eGXa8vA3NWUUCRxF-GtOmA/CBI4bIkjaRN8SvQZqTG8GZGMWolyyErtC00POe7LuD9S5i_9Ek7Kx5mL-aIg-04XI1Gjq6XzKZRimW-ldOZlWMASbyjF1tRDXWlnLOhh5VM7MjEbgCLxkPTC7bQrg3G3pXneWgUQl5kMpJFXYtqBCoEUrdiExCvHSWSC8ZuSCD0/LDUVKgAKfk4cUo6wGmGgUau3jpbYYymrYy2x2RpDSU0" alt="" loading="lazy"></div>
+        <p class="desc">Montic One Lab at Louisiana State University transforms immunosuppression research into next-generation immunotherapeutics.</p>
+      </article>
+  </div>
+  <footer>Generated from Airtable &middot; VITAL Portfolio</footer>
+</div>
+
+    <div class="detail-page" id="detail-rec43Hoby2butPZuZ">
+      <button class="back-btn" onclick="showList()">&larr; Back to portfolio</button>
+      <div class="logo-wrap"><img src="https://v5.airtableusercontent.com/v3/u/55/55/1785268800000/iGr_-uiA0q94OIApq9U6Aw/dEM3gu8MsOgUc-FMHQ3bhZyLJEIHnpC4JTVzaaNdWcKT4E2RQo1WM-qYh4LN5STsGPwE5NRHKEibB0V13UC6MNP7_1k_PL8dF4-Yzb80pYXYZtsy2UFzvbb5FGiuRd7DIV66sVOgqonBMcCbNIDocshkjUKuEw24ctxgKfm7QtLkMjARlJJXmbWF1JnnzoTU/AZsMUpUxEi73-ZxRVDAB5l8BfYXx3ZEXbOFMf2UaNWc" alt="" loading="lazy"></div>
+      <h2 class="detail-name">Thylacine Biotherapeutics Inc</h2>
+      <div class="badges"><span class="badge" style="--badge-color:#1e56a0">Accelerator</span></div>
+      <p class="detail-desc">Thylacine Biotherapeutics is an early-stage biotechnology company developing a novel, proprietary, and adaptable lipopeptide antiviral platform that targets endemic viruses and those that may cause future outbreaks. These inhalable therapeutics treat illness, prevent infection, and limit transmission.</p>
+      <a class="website-link" href="https://www.thylacine-bio.com/" target="_blank" rel="noopener">Visit website &rarr;</a>
+    </div>
+    <div class="detail-page" id="detail-rec5aVvLqWdzHJDAE">
+      <button class="back-btn" onclick="showList()">&larr; Back to portfolio</button>
+      <div class="logo-wrap"><img src="https://v5.airtableusercontent.com/v3/u/55/55/1785268800000/YqIkxt3VQXl8J6FL0oLVeg/4LgLMLzQGNGzliAQrW_4RWc4i70YYHBfsK29QpTw2eX8pBFoMwRLNDuIpGrBLsb8tej9pFA19-cTP7V21h43D1VaJSm5EeRtxitGY50VfeSFY5PuZvQYvKLpM08XfihWVGSo-sRJJnKgHR2aFNdjX1RWSUAA9lbYNYGt1mPd1Co/aMQR_NcO0F5dU2XY0FUFmiFUnZp3ZQ80ZD6javIGOXo" alt="" loading="lazy"></div>
+      <h2 class="detail-name">Macrotope, Inc.</h2>
+      <div class="badges"><span class="badge" style="--badge-color:#1e56a0">Accelerator</span></div>
+      <p class="detail-desc">Macrotope, Inc. is a biotech startup that embraces an innovative antigen-centric approach to vaccine development and therapeutic antibody discovery. Their patented MAV technology leverages antigen conformational dynamics to amplify immune responses and enhance epitope coverage, maximizing the likelihood of identifying antibodies with desired properties.</p>
+      <a class="website-link" href="https://macrotope.com/" target="_blank" rel="noopener">Visit website &rarr;</a>
+    </div>
+    <div class="detail-page" id="detail-recFWKYjU7wfySFsQ">
+      <button class="back-btn" onclick="showList()">&larr; Back to portfolio</button>
+      <div class="logo-wrap"><img src="https://v5.airtableusercontent.com/v3/u/55/55/1785268800000/13HG71k0hY9KZgq3xxohaw/D9oslrjHaXTkYQyEFIQSRMXl844v1ev8L7k2eS6RmvYr8S1npxammNPQAOUHgZFeXz1qK03yTydLPoZUMfPNMIpBGQrH5qxD6Qj6-Ri3rsGTT26xckNlSFYuGLDfrmwcCGpULN8mcktG9-X0T_g5l0MvCy0yrcrKFBlLU-R5o04/ShcCRs5hyp0RwBuOtgXuc8zffrqATprViF08a3prLdM" alt="" loading="lazy"></div>
+      <h2 class="detail-name">Tenza</h2>
+      <div class="badges"><span class="badge" style="--badge-color:#1d6f42">PrEP Award</span></div>
+      <p class="detail-desc">Tenza converts probiotic microbes into living factories for targeted delivery of supplements, therapeutics, and vaccines</p>
+      <a class="website-link" href="https://www.tenza.bio" target="_blank" rel="noopener">Visit website &rarr;</a>
+    </div>
+    <div class="detail-page" id="detail-recFZPGdS5Wh0MIQB">
+      <button class="back-btn" onclick="showList()">&larr; Back to portfolio</button>
+      <div class="logo-wrap"><img src="https://v5.airtableusercontent.com/v3/u/55/55/1785268800000/6mn6XioV5WeuBF5X_zHvlg/tvc2-sC_l-xbIv_SCu0QGFMUTdHSrTuSYn7mPz-9fNC3zDDtzUTL0_SzEnGkLDvZIbl_xhkVVRFMDD5RSQ4emWikj2hcsq0Lhr00tC_5z_DVYlsnqtzbFLF65cTIGM3V4--DkX5JBLwSgKSMtzcB68FgcDcLrtrju5sJfF4jlIM/Rc02b489a20l1OjvPS_Mh1GeD6uh9HsDIlF2LUjw7lo" alt="" loading="lazy"></div>
+      <h2 class="detail-name">New Platelet Co</h2>
+      <div class="badges"><span class="badge" style="--badge-color:#0e7c86">Non-Dilutive Funding</span></div>
+      <p class="detail-desc">New Platelet Company develops manufactured universal platelets designed to expand access to lifesaving blood components. Its approach could strengthen hospital surge capacity, reduce shortages, and support emergency, disaster, and routine healthcare needs.</p>
+      <a class="website-link" href="https://newplateletcompany.com/" target="_blank" rel="noopener">Visit website &rarr;</a>
+    </div>
+    <div class="detail-page" id="detail-recH7qfY3EL76Vfze">
+      <button class="back-btn" onclick="showList()">&larr; Back to portfolio</button>
+      <div class="logo-wrap"><img src="https://v5.airtableusercontent.com/v3/u/55/55/1785268800000/2QzK451KCqJy3UfAYaDBEw/Bvd6uIzCY3hSQFTluhzblFgHtz9jCU_5sxHPPxzVr0qqWf1ofrfyg3Ml4Y2-I7Bqc7pfosM6ZaowMaWqgSVcYN0cLyU8LO7aBFTXkiwQAqOQHCtGIMp0QnkIf25SgWWLwmZUUagP5oZkk5eIxg901dQIOXHUuGoFLvfgwp-EEolAu-a7yhe5WcJsEy2l3tOs/5Ka2zFWceoUoMW7wlofwS1SfdTzWNUcSegA8nh-88wI" alt="" loading="lazy"></div>
+      <h2 class="detail-name">Cutanos</h2>
+      <div class="badges"><span class="badge" style="--badge-color:#1e56a0">Accelerator</span></div>
+      <p class="detail-desc">Cutanos harnesses the power of immune cell-specific drug delivery to develop next-generation therapies for infectious diseases and cancer.</p>
+      <a class="website-link" href="https://cutanos.com/" target="_blank" rel="noopener">Visit website &rarr;</a>
+    </div>
+    <div class="detail-page" id="detail-recKxGlbnk9tGpdl1">
+      <button class="back-btn" onclick="showList()">&larr; Back to portfolio</button>
+      <div class="logo-wrap"><img src="https://v5.airtableusercontent.com/v3/u/55/55/1785268800000/ridgLDZZaSUZsxn3S_HM5g/fhjNOeAfOVeGFj7r89n3JVfmyhZ_v5pc5TlvaAmVkfPD6X2c3QTCfEAG15a8Rinj10XjgwRudhZ7OrH44eSj6nfxtIXU8vT2ciK42hhyr6bYhCYdhr7QXp4JN6ATBCtd_CZxD8_R5q4iG-JPDZJ0jLC6olZfwUL4tlwLBKWChGs/UL3o4OzEvMxf0VnY7NfLdV8u9tc6k0CMUkm99KWKrng" alt="" loading="lazy"></div>
+      <h2 class="detail-name">Boost Biopharma</h2>
+      <div class="badges"><span class="badge" style="--badge-color:#1d6f42">PrEP Award</span></div>
+      <p class="detail-desc">Boost Biopharma develops protein-based vaccines and monoclonal antibodies through its Rapid Antigen Deployment (RAD) platform, engineering pathogen-specific antigens at speeds comparable to mRNA technology. The platform is designed to address issues of immune imprinting that can inhibit vaccine development, producing candidates that are safe, scalable, low-cost, and stable. Its lead SARS-CoV-2 candidate, backed by CEPI, NIH/NIAID, and BARDA, is now in Phase 1 trials.</p>
+      <a class="website-link" href="https://www.boostbiopharma.com" target="_blank" rel="noopener">Visit website &rarr;</a>
+    </div>
+    <div class="detail-page" id="detail-recMyDM6BVNeUqvhL">
+      <button class="back-btn" onclick="showList()">&larr; Back to portfolio</button>
+      <div class="logo-wrap"><img src="https://v5.airtableusercontent.com/v3/u/55/55/1785268800000/lN1X3GJh9Du3oBxoQEuRbQ/c-VLesJruDdOkiL1MHvSb_aXzKhqVE_j54qiedY3xJIh524vXB96VK4MEwtLPV389A2CUZ8dZ9PDWtyXPJFC9HYYsdAepVhU2cfEIGwI6RjDNU7DtDJQ80w2noZY_19oeULQVUNykyN49-jpX3BWqS78w5-Cw-X5aS99FJmutR4/q9GpHlG_XFOsLUtjSKAQMxj5Rx2b5AKEfvYazImDu3Q" alt="" loading="lazy"></div>
+      <h2 class="detail-name">Avocet</h2>
+      <div class="badges"><span class="badge" style="--badge-color:#1e56a0">Accelerator</span></div>
+      <p class="detail-desc">Avocet Bio is on a mission to develop transformative solutions for global health challenges, with a current focus on protecting high-risk populations from respiratory viral infections. Backed by a dynamic team of innovators, AvocetBio combines cutting-edge technology with a deep commitment to improving patient outcomes and advancing public health.</p>
+      <a class="website-link" href="https://www.avocet.bio/" target="_blank" rel="noopener">Visit website &rarr;</a>
+    </div>
+    <div class="detail-page" id="detail-recQTZ0hOENArIFs5">
+      <button class="back-btn" onclick="showList()">&larr; Back to portfolio</button>
+      <div class="logo-wrap logo-label" aria-hidden="true"><span>NewCo</span></div>
+      <h2 class="detail-name">NewCo</h2>
+      <div class="badges"><span class="badge" style="--badge-color:#1e56a0">Accelerator</span></div>
+      <p class="detail-desc">Grant Knappe is an innovator at the Bathe BioNanoLab working on harnessing nucleic acid nanotechnology to develop more potent and durable vaccines and active immunotherapies.</p>
+      
+    </div>
+    <div class="detail-page" id="detail-recRATMXIWeGVb3ah">
+      <button class="back-btn" onclick="showList()">&larr; Back to portfolio</button>
+      <div class="logo-wrap"><img src="https://v5.airtableusercontent.com/v3/u/55/55/1785268800000/ARjZnDR3eEigGFbltItMfQ/kjNUSOssgG4zGe7W4KBIb9Frgo8FKAdiwbInoclzONSN5fhpyrvTEvEdMiOY76VWYmDUNW4VTvB1DFXxNtPvGWxr9c7Kve_YSxcncqy4NRrb61SHXz2Ti-9bjjecqiTYXl_7vaRVnp8MAmaqR-TE346z2ulA2gCIxv9BnzWawe4/WBtEMHl5DLHsJ7IcXkNy2CEX98JAa5gucR8Nj29hRn0" alt="" loading="lazy"></div>
+      <h2 class="detail-name">YinLab University of Texas at Austin</h2>
+      <div class="badges"><span class="badge" style="--badge-color:#1e56a0">Accelerator</span></div>
+      <p class="detail-desc">The Yin Lab at University of Texas at Austin is an immunoengineering lab that develops next-generation nanoparticle adjuvants to enable more effective vaccines against influenza, coronaviruses, and filoviruses.</p>
+      <a class="website-link" href="https://sites.utexas.edu/yin-lab/" target="_blank" rel="noopener">Visit website &rarr;</a>
+    </div>
+    <div class="detail-page" id="detail-recRth8IVQOJ037sB">
+      <button class="back-btn" onclick="showList()">&larr; Back to portfolio</button>
+      <div class="logo-wrap"><img src="https://v5.airtableusercontent.com/v3/u/55/55/1785268800000/SAG9VaWPv0Fhy5VOcy3dwA/YIB5HB9E8rSg-h1PmVdB9zGEqHdHVbr-KWmduDuPHt8kS1cujCt9aMpxk2Y3bIKefHHw6FAPXTZzlfg25XayeGutBWZvAEtIC_0VVxNGyeY1KfoYibq9FZhOMfGoEJWUmqRmd2HiOyTQIy_uAFrJn3ifMTEWXZiVVDEvHxWeTWk/1VkxHky2kmvC5UL6jdgxgFU9r3fXfKAe71FB1f4yU94" alt="" loading="lazy"></div>
+      <h2 class="detail-name">Epigenter, LLC</h2>
+      <div class="badges"><span class="badge" style="--badge-color:#0e7c86">Non-Dilutive Funding</span><span class="badge" style="--badge-color:#1e56a0">Accelerator</span></div>
+      <p class="detail-desc">Epigenter develops a new type of therapeutic protein designed to epigenetically unlock the body’s silenced potential, creating new approaches to treating chronic and intractable diseases with high unmet need.</p>
+      <a class="website-link" href="https://www.epigenter.com" target="_blank" rel="noopener">Visit website &rarr;</a>
+    </div>
+    <div class="detail-page" id="detail-recRwKHCt0RD790da">
+      <button class="back-btn" onclick="showList()">&larr; Back to portfolio</button>
+      <div class="logo-wrap"><img src="https://v5.airtableusercontent.com/v3/u/55/55/1785268800000/DvexFlfzmpOjTGlDBxSpgg/jW51ErZN9dcgkK74dLhA_l1UVV5DoJda1mkJaXSlHgr95SMmIHVt9GVTSUbmhr_AD2Mve9iAjAZyRrm_GDxMa8r6h6Xork1FmckgceAm6kz9mbZYR3uh1X3d8_ylKY-gfIGksLTtTacKHwCoyZY1V3OnpJ9Mj8bEbm7RSfIgba0/D4srqyRXSA2k23UE1RsxQOvbptnZUqJfxCOkQigNYoM" alt="" loading="lazy"></div>
+      <h2 class="detail-name">Fletcher Biosciences</h2>
+      <div class="badges"><span class="badge" style="--badge-color:#0e7c86">Non-Dilutive Funding</span></div>
+      <p class="detail-desc">Fletcher Biosciences develops precision immunotherapies that selectively target disease-associated immune cells. The company&#x27;s approach is designed to enable highly specific treatments with improved safety profiles.</p>
+      <a class="website-link" href="https://fletcherbio.com/" target="_blank" rel="noopener">Visit website &rarr;</a>
+    </div>
+    <div class="detail-page" id="detail-recWBPm0tPMNY1wt9">
+      <button class="back-btn" onclick="showList()">&larr; Back to portfolio</button>
+      <div class="logo-wrap"><img src="https://v5.airtableusercontent.com/v3/u/55/55/1785268800000/1tRkhgwLyelaqVAY6ujzXw/T5otrA3keqT4gMu1DxaHISy9ITDMi51HInUfvPkUyQp9kBFIQZ1Idl8hAox2tOFX3Kny-YL5dp2gD9PkjXRMo5SUtO8VihS9jS3eDSDf1nvRbvSFF-o38Rm8ireIIiHUnDws5T7pIP0cVHet8T5_ZGe9oXcofFr48UI3UIYzV0s/sP9ALaP7vGWMBGQ2DHoaP6vpoqnbeTitMQY9Pi2gies" alt="" loading="lazy"></div>
+      <h2 class="detail-name">Cryptyx</h2>
+      <div class="badges"><span class="badge" style="--badge-color:#1e56a0">Accelerator</span></div>
+      <p class="detail-desc">Cryptyx Bioscience harnesses an innovative and proprietary drug discovery platform to unlock the potential of cryptic metabolites and address today&#x27;s most pressing and unmet health challenges.</p>
+      <a class="website-link" href="https://www.cryptyxbioscience.com/" target="_blank" rel="noopener">Visit website &rarr;</a>
+    </div>
+    <div class="detail-page" id="detail-recg3R6TuMdBltNbF">
+      <button class="back-btn" onclick="showList()">&larr; Back to portfolio</button>
+      <div class="logo-wrap"><img src="https://v5.airtableusercontent.com/v3/u/55/55/1785268800000/iltpGzze9W4MHGdi4BuUzw/Vpy6aSk0NGejJRYRcCSCmydzgEVp2yxW9VCTmm6FwQ_kEM41fmYJqYd5K-4C6F7o6g1cNpKhKK6JJ60H_LoTkUnocahH2DTD4FS8cgcVUyS3fPI1MdmMqS9g9yUyusgjrrFiZJrkrj_OmubmvNyTmtPR3ULvKqCEwyAc7fQ09Q8/MRxqZReG2RTJ-pTo-sezdJSoY3VZWKBy1nxfoCJXHDY" alt="" loading="lazy"></div>
+      <h2 class="detail-name">Inflammasense</h2>
+      <div class="badges"><span class="badge" style="--badge-color:#1e56a0">Accelerator</span></div>
+      <p class="detail-desc">InflammaSense builds the VITALx-patch, a wearable platform that records Autonomic Neurography, or ANG, as a new vital sign. By transmitting disease severity to clinicians with millisecond precision, the technology aims to improve therapeutic efficacy.</p>
+      <a class="website-link" href="https://inflammasense.com/" target="_blank" rel="noopener">Visit website &rarr;</a>
+    </div>
+    <div class="detail-page" id="detail-rechb6mUTGgT3azvO">
+      <button class="back-btn" onclick="showList()">&larr; Back to portfolio</button>
+      <div class="logo-wrap"><img src="https://v5.airtableusercontent.com/v3/u/55/55/1785268800000/_-30ryZtTf8MpKQxa0TE1A/5EmCQBbMLygNHpGIL_K-8eU2YVGazXLw6Pf9pAxO3RQ-Zz9KHt0Wvu4OrOSLjKP62gFkSKTfh-GyRJ6VMLuPmmletAzBMNpj5_FogPt3rvnjl2v6e1qIZhbwRQ8H4wfe7LEPEn2aMWkbOsokhAvbV3Gq_6HmSzexMmefBP7Cz_mysfuVnusAihFVDNPFblLn/bz1OiSYXD6gSO2zLchB3ocR23dQ7kvvwktG3yyjIylY" alt="" loading="lazy"></div>
+      <h2 class="detail-name">Safi</h2>
+      <div class="badges"><span class="badge" style="--badge-color:#0e7c86">Non-Dilutive Funding</span></div>
+      <p class="detail-desc">Safi Biotherapeutics Inc. is developing a cost-efficient manufactured human red blood cell (mRBC) product at scale to address military and civilian blood shortages, including freeze dried and glycerol-free frozen mRBC formulations for pre-hospital use and military and government stockpiling.</p>
+      <a class="website-link" href="https://safi.bio/" target="_blank" rel="noopener">Visit website &rarr;</a>
+    </div>
+    <div class="detail-page" id="detail-reck58YHv7Y8X0P5F">
+      <button class="back-btn" onclick="showList()">&larr; Back to portfolio</button>
+      <div class="logo-wrap"><img src="https://v5.airtableusercontent.com/v3/u/55/55/1785268800000/6p5jtf_PD_EcHUA6UkuRGQ/ls03SbkhGlSH0i6Le-PJF-8DkPP9jPiGH9dk26WtOCBDj1pZ-5C3gHYKI-AUIWA7-7Vyq5hJUUhfXG6BUctZU3N9-vzL9xq3E3TpkXDOJ2Bv4-bRG1EpShy2aHq5hudVPsb5xmbyAKJIpnbgr6UkVOBkU_Xxe4jcTnBDAQDXvj4/SNiOJpeXWO2ppLr7AX23GNXyIropjwyGZU4AfzoYUzM" alt="" loading="lazy"></div>
+      <h2 class="detail-name">Vaayu</h2>
+      <div class="badges"><span class="badge" style="--badge-color:#0e7c86">Non-Dilutive Funding</span></div>
+      <p class="detail-desc">Vaayu Therapeutics is a preclinical-stage biotech company developing novel small-molecule kinase inhibitors to treat severe influenza and related acute respiratory distress syndrome (ARDS). Founded by researchers from institutions including Tufts University and Fox Chase Cancer Center, the company focuses on blocking cell death to prevent fatal lung damage.</p>
+      
+    </div>
+    <div class="detail-page" id="detail-recklLqYRFPeiCoCt">
+      <button class="back-btn" onclick="showList()">&larr; Back to portfolio</button>
+      <div class="logo-wrap"><img src="https://v5.airtableusercontent.com/v3/u/55/55/1785268800000/NLfv52XY6d1u9X5mj7tRzQ/WxwMU7Zgn82u9N6WGwMEh-bmok6C72E2YipeqpCi6qvjEZmbj_rkow7EWizG_djswPsN_C3WgWHYGACK9quwttaQ4aCISS2OmBLanxoj3iYH8Zq8ltji2UiQ8WTTd0aT6xCeXY7lLfOREKjEbOBcMkVPGu3H1Tyw_6vgkFMgIRE/Aw5GQ0Tg17Rstvtcn0pGkQY9v6s30WxqdOt8sj6C138" alt="" loading="lazy"></div>
+      <h2 class="detail-name">Nitro</h2>
+      <div class="badges"><span class="badge" style="--badge-color:#0e7c86">Non-Dilutive Funding</span></div>
+      <p class="detail-desc">Nitro Biosciences is a company developing a next-generation antigen engineering platform</p>
+      <a class="website-link" href="http://www.nitrobiosciences.com/" target="_blank" rel="noopener">Visit website &rarr;</a>
+    </div>
+    <div class="detail-page" id="detail-recmHAhx0OrMN4U3C">
+      <button class="back-btn" onclick="showList()">&larr; Back to portfolio</button>
+      <div class="logo-wrap"><img src="https://v5.airtableusercontent.com/v3/u/55/55/1785268800000/shM3lhgW4KFVXyP9GBt_FA/q05Kw7YzC6ccnnNQzhOLkW3ykkuo4yXkA4zUnxScfdv-cWJJN-2AWOHPCPyRh7b6TsilL_FFhdDKNoM6gGyjPs5Nou27zYglvlFMIz8rVj_pHT2W1fN7Eorgo570DmcKx4FhpcTKKK-pgPOMPn9Y42YBCUpqHzGJOTMoOE6Oaxw/l1K35Y72IwbkdDs7DLzck5memjLQSkbZkpwLUjbHHus" alt="" loading="lazy"></div>
+      <h2 class="detail-name">AuraVax Therapeutics Inc</h2>
+      <div class="badges"><span class="badge" style="--badge-color:#1e56a0">Accelerator</span></div>
+      <p class="detail-desc">AuraVax Therapeutics is commercializing its intranasal platform termed “NanoSTING” to treat and prevent respiratory infections independent of the pathogen. NanoSTING technology safely and sustainably activates the STING pathway to restore and boost innate immunity. NanoSTING-001 is a broad-acting intranasal host-directed-therapeutic to treat infections from respiratory pathogens, and NanoSTING-002 is a mucosal adjuvant to improve immune responses to vaccines.</p>
+      <a class="website-link" href="https://www.auravax.com/" target="_blank" rel="noopener">Visit website &rarr;</a>
+    </div>
+    <div class="detail-page" id="detail-recpkkWRQDAH7qyKK">
+      <button class="back-btn" onclick="showList()">&larr; Back to portfolio</button>
+      <div class="logo-wrap"><img src="https://v5.airtableusercontent.com/v3/u/55/55/1785268800000/82N1YoH6LDaVQeyqElP98A/sXle7ls-yjRAJHxvFk6_t7pbwnaFNejmOOv9TOnCGZ73TcELqc1LYllVxZvGIW_XPv4123NL2BMYQ8qErRbewetvZX1jWuWqu34Ng_NsBLz4XyhxMhtKiG6fWt8KoUh9ljq11MRCQKkm0lAtLpkH8ENrNfXd-5_zbmF-UZvdx1M/5eZhS8L2rq5tSwZbPUWajGY9cK2ATHqJ7-ym2VTsB4E" alt="" loading="lazy"></div>
+      <h2 class="detail-name">Narval</h2>
+      <div class="badges"><span class="badge" style="--badge-color:#0e7c86">Non-Dilutive Funding</span></div>
+      <p class="detail-desc">Narval is developing Synthetic Antibody Mimetic Proteins (AMPs), a next-generation alternative to conventional antibodies, delivered through mucosal or skin tissues to treat diseases of the eyes, lungs, and skin. Its platform aims to make antibody therapeutics safer, more accessible, and less costly for rapid-response medical countermeasures.</p>
+      <a class="website-link" href="https://narvalbio.com/" target="_blank" rel="noopener">Visit website &rarr;</a>
+    </div>
+    <div class="detail-page" id="detail-recsy2JZtjPM7h8ww">
+      <button class="back-btn" onclick="showList()">&larr; Back to portfolio</button>
+      <div class="logo-wrap"><img src="https://v5.airtableusercontent.com/v3/u/55/55/1785268800000/cH08p0brW6i2fzR1oD_rgQ/HehKTT2PR8zL4RhuhkmL27gZkhdNERaxIq6YAUxKhcqnuI-cf92Y_JL5JjF7sduHykhGOk2VMPFDR-suOOSWP_qs1Nd2p-Xgrg2RXrjDPhZOIcf33WfFCyJTllaUIIXhuZazEsSusOHtLkNP6YQJocNS-CtWmAmPGzbMs6poN1CmRYBkCwQJbk-ATERqnEAB/UO7Ym84YFVxrI5XA-InSAYGbVDwe5YCvUeTZrs3fBNU" alt="" loading="lazy"></div>
+      <h2 class="detail-name">Pavi Health</h2>
+      <div class="badges"><span class="badge" style="--badge-color:#1e56a0">Accelerator</span></div>
+      <p class="detail-desc">Pavi Health reimagines precision medicine for severe infections and sepsis, providing critical information to improve clinical outcomes and reduce costs.</p>
+      
+    </div>
+    <div class="detail-page" id="detail-recwHdXZ0YQyBZvvA">
+      <button class="back-btn" onclick="showList()">&larr; Back to portfolio</button>
+      <div class="logo-wrap"><img src="https://v5.airtableusercontent.com/v3/u/55/55/1785268800000/sPY81PsVNG8BOMk4fArCEw/y6m2IgNBnt5h5kPKXXrvQyoA8UC_7ulkLjxU1rfgoQ0UAQz-06L_LRdRoU_POqHNMCjFaP6LufTDLOg9jWImMoDmbWiWcIxE9agBrAhB6QDRblK8NPsCh1WDLthCyTtVn_7BcIEl7HNbI-tMWDQ-Z0_-NwjGhfFCCKky2e4ADT4/C1J3q64oQEHWzE4xrGpBlECwPDRPKFSzwIge94V8GoA" alt="" loading="lazy"></div>
+      <h2 class="detail-name">Cell BioEngines </h2>
+      <div class="badges"><span class="badge" style="--badge-color:#1e56a0">Accelerator</span></div>
+      <p class="detail-desc">Cell BioEngines develops off-the-shelf allogeneic cell therapies by chemically reprogramming stem cell fate and function to treat serious and currently incurable diseases.</p>
+      <a class="website-link" href="https://cellbioengines.com/" target="_blank" rel="noopener">Visit website &rarr;</a>
+    </div>
+    <div class="detail-page" id="detail-recxd17dFT4f1PR7c">
+      <button class="back-btn" onclick="showList()">&larr; Back to portfolio</button>
+      <div class="logo-wrap"><img src="https://v5.airtableusercontent.com/v3/u/55/55/1785268800000/heMNVem4AUMMX9j7DJ0JfA/nyzblDtwnsjqgqS79FgTafh-Vfn7QuX7-3S7minyDA3Z2naS24CueVmuUzxkQZQC8JwKDF5-QFcI88hmUjJoNDB6oOrhFgsrUAx2gDVV85Js6l-N53hLVnSeeiVZeDD-Lwb8rlt8F0W-ck9S1lAmV73wPyqWReT6WJqtzyIzf6E/O9LmeAeAuyyalKWwhAE0sFfSc-i4_LjUIJkUH9xFX2w" alt="" loading="lazy"></div>
+      <h2 class="detail-name">Sagitta Biotech</h2>
+      <div class="badges"><span class="badge" style="--badge-color:#1e56a0">Accelerator</span></div>
+      <p class="detail-desc">Sagitta Biotech develops innovative vaccines featuring high immunogenicity, short development time, and constant manufacturing process in order to tackle unmet needs in the developed and developing worlds.</p>
+      <a class="website-link" href="https://sagittabiotech.com/" target="_blank" rel="noopener">Visit website &rarr;</a>
+    </div>
+    <div class="detail-page" id="detail-recyHm3Erqpq152k3">
+      <button class="back-btn" onclick="showList()">&larr; Back to portfolio</button>
+      <div class="logo-wrap"><img src="https://v5.airtableusercontent.com/v3/u/55/55/1785268800000/Qh0ZNSVw1sFQzr7P7qzMuA/NaeRIXGuV4Fpmk1oP_2XirwWf1S4ppFlCvNB-hhhxilEU-xQmbA3bXb1Fr5v5odhl7vpW64Zgo7LMfs6QjcCtWEslhii0OqoVQeH9Jss2wuKe21ChutRAJ78QPuAGeePMOpu0cT5sapefqG7EPw9BNZYT63OXvNdxniDWwB9e0Wn61yfCX2-PKnMlx0uvbBN/oXW3H4jsZZLHmZKDHTy5-pIAq_85R2Gf5mg12UETEYo" alt="" loading="lazy"></div>
+      <h2 class="detail-name">Cyrus Biotechnology</h2>
+      <div class="badges"><span class="badge" style="--badge-color:#1d6f42">PrEP Award</span></div>
+      <p class="detail-desc">Cyrus Biotechnology is a computationally-driven protein engineering company that transforms naturally occurring proteins into superior therapeutics using advanced modeling and deep mutagenesis. Its lead programs target severe autoimmune disease and Acute Respiratory Distress Syndrome (ARDS) through engineered biologics.</p>
+      <a class="website-link" href="https://cyrusbio.com/" target="_blank" rel="noopener">Visit website &rarr;</a>
+    </div>
+    <div class="detail-page" id="detail-recyOA3hNlstQAx7q">
+      <button class="back-btn" onclick="showList()">&larr; Back to portfolio</button>
+      <div class="logo-wrap"><img src="https://v5.airtableusercontent.com/v3/u/55/55/1785268800000/0FnxAAxY8Z5Dj6j3BTa9MA/c6URzD6roUsj4pkYYtnrv2z6tmMV7FqQ2gYoWgjx3rRffUO9hDPYP35h6UQ3UcTNtGTIq1eAVKJbIac3OkZFtrbXO9dLMkYtOUD1PWYD8mf_052CAm0eAS8W_SAYEsA5HUS8wiyW6yFI7u_TbGkMBUccOxyILbpXibNBnq7jQlM/QkCXzQg0OAXphRyIOUFr6pMNh3zTxXa5of8oF-9ZQHU" alt="" loading="lazy"></div>
+      <h2 class="detail-name">Immunyx Pharma</h2>
+      <div class="badges"><span class="badge" style="--badge-color:#1e56a0">Accelerator</span></div>
+      <p class="detail-desc">Immunyx Pharma is developing novel immune modulating therapies by targeting the toxic activity of the neutrophil in infectious and inflammatory disease. Their first-in-class orally available drug, IMYX-3 has been shown effective in safe in animal models and is positioned to reach clinical evaluation in the coming year.</p>
+      <a class="website-link" href="https://www.immunyx.com/" target="_blank" rel="noopener">Visit website &rarr;</a>
+    </div>
+    <div class="detail-page" id="detail-recyakftjc6tvfIcO">
+      <button class="back-btn" onclick="showList()">&larr; Back to portfolio</button>
+      <div class="logo-wrap"><img src="https://v5.airtableusercontent.com/v3/u/55/55/1785268800000/q9MeIlIPYjGF37zvj1h5Vw/ksiL017J6qOgViOWDSLI1ltOxdteaK6IyzPuEYhmxy8nKPY7bafHLdvDgyOLhujdLXzvh4mwyDkN39x8CysFPeT9TvKKxCe7EyYB2zixIe7KYXVJiADtVilLkrtlGFuZDiTNPQ8sjpJfEcXZy0tHPAO6PHnr1C4HfB0f31rRriQ/6AuBgWbKymJSmpjAUMyM6euavBRc3TtAWaFz_knJF-I" alt="" loading="lazy"></div>
+      <h2 class="detail-name">Spectre Bio</h2>
+      <div class="badges"><span class="badge" style="--badge-color:#0e7c86">Non-Dilutive Funding</span></div>
+      <p class="detail-desc">Spectre Bio develops genome-inactivated bacterial-like particles, or BLiPs, that train mucosal innate immunity against incoming pathogens, which can be deployable anytime and anywhere.</p>
+      <a class="website-link" href="https://spectrebio.co/" target="_blank" rel="noopener">Visit website &rarr;</a>
+    </div>
+    <div class="detail-page" id="detail-recylcwAN5pID1MXW">
+      <button class="back-btn" onclick="showList()">&larr; Back to portfolio</button>
+      <div class="logo-wrap"><img src="https://v5.airtableusercontent.com/v3/u/55/55/1785268800000/eGXa8vA3NWUUCRxF-GtOmA/CBI4bIkjaRN8SvQZqTG8GZGMWolyyErtC00POe7LuD9S5i_9Ek7Kx5mL-aIg-04XI1Gjq6XzKZRimW-ldOZlWMASbyjF1tRDXWlnLOhh5VM7MjEbgCLxkPTC7bQrg3G3pXneWgUQl5kMpJFXYtqBCoEUrdiExCvHSWSC8ZuSCD0/LDUVKgAKfk4cUo6wGmGgUau3jpbYYymrYy2x2RpDSU0" alt="" loading="lazy"></div>
+      <h2 class="detail-name">Montic One Lab at Louisiana State University</h2>
+      <div class="badges"><span class="badge" style="--badge-color:#1e56a0">Accelerator</span></div>
+      <p class="detail-desc">Montic One Lab at Louisiana State University transforms immunosuppression research into next-generation immunotherapeutics.</p>
+      <a class="website-link" href="https://www.medschool.lsuhsc.edu/genetics/monticone_lab.aspx" target="_blank" rel="noopener">Visit website &rarr;</a>
+    </div>
+
+<script>
+  function showDetail(id) {
+    document.getElementById('list-view').classList.add('hidden');
+    document.querySelectorAll('.detail-page').forEach(el => el.classList.remove('active'));
+    document.getElementById('detail-' + id).classList.add('active');
+    window.location.hash = id;
+    window.scrollTo(0, 0);
+  }
+  function showList() {
+    document.querySelectorAll('.detail-page').forEach(el => el.classList.remove('active'));
+    document.getElementById('list-view').classList.remove('hidden');
+    history.pushState('', document.title, window.location.pathname + window.location.search);
+    window.scrollTo(0, 0);
+  }
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const filter = btn.dataset.filter;
+      document.querySelectorAll('.card').forEach(card => {
+        const programs = (card.dataset.programs || '').split('|');
+        card.classList.toggle('hidden', filter !== 'all' && !programs.includes(filter));
+      });
+    });
+  });
+  window.addEventListener('DOMContentLoaded', () => {
+    const id = window.location.hash.replace('#', '');
+    if (id && document.getElementById('detail-' + id)) {
+      showDetail(id);
+    }
+  });
+</script>
+</body>
+</html>
